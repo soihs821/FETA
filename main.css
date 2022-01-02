@@ -1,0 +1,92 @@
+body {
+    display:flex;
+}
+
+.header {
+  width: 100%;
+  height: 56px;
+  position: fixed;
+  box-shadow: rgb(0 0 0 / 30%) 0px 1px 0px 0px;
+}
+
+#exec {
+  background: #c0c9cd;
+  color: white;
+  border: 0;
+  float: right;
+  border-radius: 7px;
+  margin: 6px 30px 0 0;
+  width: 120px;
+  line-height: 33px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.blocks {
+  float: left;
+  margin-top: 20px;
+  margin-left: 50px;
+}
+
+.block-name {
+    width: 170px;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.fb {
+    margin-top: 40px;
+}
+
+.block {
+    width: 170px;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 10px;
+    box-shadow: 1px 5px 7px 3px #e1e3e8;
+    border-radius: 7px;
+}
+
+hr {
+  width: 50px;
+  border: solid #7e848a;
+  margin-top: 320px;
+  float: left;
+}
+
+.slot {
+    background: #d8dce2;
+    float: left;
+    display: table;
+    padding: 10px;
+    text-align: center;
+    width: 160px;
+    height: 200px;
+    margin-top: 150px;
+    border-radius: 7px;
+}
+
+.slot-name {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.slots {
+    margin-left: 600px;
+}
+
+.data-close {
+    float: right;
+    padding-top: 10px;
+    width: 20px;
+}
+
+#now {
+    width: 170px;
+    height: 30px;
+    text-align: center;
+    margin-left: 50px;
+    margin-top: 150px;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8" />
+
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"
+    />
+    <title>hyunsung</title>
+    <link rel="stylesheet" href="./main.css" />
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  </head>
+
+  <body>
+    <div class="header">
+      <button id="exec" onclick="onClick()" disabled="true">실행하기</button>
+    </div>
+
+    <div class="container">
+      <div id="now"></div>
+      <div class="blocks">
+        <div class="block-name db">Data Blocks</div>
+        <div class="block data-block data" id="data" draggable="true">
+          <div>모두를 위한 AI</div>
+        </div>
+        <div class="block data-block" id="data" draggable="true">
+          <div>
+            Smarter alone, <br />
+            Smartest together
+          </div>
+        </div>
+        <div class="block data-block" id="data" draggable="true">
+          <div>
+            Make AI work for the <br />
+            rest of us
+          </div>
+        </div>
+
+        <div class="block-name fb">Function Blocks</div>
+        <div
+          class="block function-block toUpperCase"
+          id="func"
+          draggable="true"
+        >
+          <div>toUpperCase</div>
+        </div>
+        <div class="block function-block wordNum" id="func" draggable="true">
+          <div>wordNum</div>
+        </div>
+        <div class="block function-block reverse" id="func" draggable="true">
+          <div>reverse</div>
+        </div>
+      </div>
+
+      <div class="slots">
+        <div class="slot droppable" id="data">
+          <div class="slot-name data-slot">데이터 슬롯</div>
+        </div>
+        <hr />
+        <div class="slot droppable" id="func">
+          <div class="slot-name function-slot">함수 슬롯</div>
+        </div>
+        <hr />
+        <div class="slot" id="result">
+          <div class="slot-name result-slot">결과 슬롯</div>
+        </div>
+      </div>
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>
