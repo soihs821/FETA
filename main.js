@@ -5,12 +5,21 @@ let draggableBlock = null;
 const now = document.querySelector("#now");
 const result_slot = document.querySelector("#result");
 
+const data_parent = document.querySelector(".db");
+const func_parent = document.querySelector(".fb");
+
 // 결과 슬롯 계산용
 let data = "";
 let func = "";
 
+// x 버튼을 누르면 다시 기존 위치로 되돌리기 위해 클론.
+let data_clone = "";
+let func_clone = "";
+
 const exec = document.getElementById("exec");
 let count = 0; // 슬롯 채워진 여부 판단용
+let data_count = 0;
+let func_count = 0;
 
 blocks.forEach((block) => {
   block.addEventListener("dragstart", dragStart);
@@ -60,38 +69,43 @@ function dragLeave() {
 }
 
 function dragDrop(e) {
-  // x 버튼을 누르면 다시 기존 위치로 되돌리기 위해 클론.
-  let data_clone = "";
-  let func_clone = "";
+  // 슬롯에 덧씌울 때 블록 삭제 안되게 하기 위함
+  /*if (data_count >= 1) {
+    console.log("2");
+    data_parent.appendChild(data_clone);
+    console.log(this);
+  } else if (func_count >= 1) {
+    console.log("func_clone", func_clone);
+    func_parent.appendChild(func_clone);
+    console.log("func_count", func_count);
+  }*/
+
   if (draggableBlock.id === "data") {
     data_clone = draggableBlock.cloneNode(true);
+    data_count++;
   } else if (draggableBlock.id === "func") {
     func_clone = draggableBlock.cloneNode(true);
+    func_count++;
   }
 
-  this.style.border = "solid 1px";
-  this.style.background = "white";
-  this.style.display = "table";
-  // 수직 정렬도 해야 함 !
-
-  // console.log("child:", draggableBlock.childNodes[1]);
-  // draggableBlock.childNodes[1].style.display = "table-cell";
-  // draggableBlock.childNodes[1].style.textAlign = "center";
-  // draggableBlock.childNodes[1].style.verticalAlign = "middle";
   this.appendChild(draggableBlock);
 
   let targetText = e.dataTransfer.getData("targetText"); // drop한 블록의 내용 가져오기
-  this.innerHTML = targetText; // 가져온 내용으로 슬롯 문구 변경하기
+  this.innerHTML = targetText;
 
-  if (count > 2) {
+  this.style.border = "solid 1px";
+  this.style.background = "white";
+  this.style.width = "160px";
+
+  if (count >= 2) {
     count = 2;
   } else {
-    count++; // 채워진 슬롯 체크
+    count++; // 슬롯 하나 채워질 때마다 count 증가
   }
-  checkButton();
+  checkButton(); // 실행하기 버튼 활성화 여부 체크
 
   if (draggableBlock.id === "data") {
-    // 결과 계산에 필요한 데이터와 함수 저장해두고, x버튼 추가
+    // 결과 계산에 필요한 data와 func 저장해두고, x버튼 추가
     data = targetText;
     this.innerHTML += '<div class="delete" id="data-x">x</div>';
   } else if (draggableBlock.id === "func") {
@@ -104,7 +118,6 @@ function dragDrop(e) {
   const close_func = document.querySelector("#func-x");
 
   if (close_data === null) {
-    console.log("if1");
     close_func.addEventListener("click", () => {
       delete_func(func_clone);
     });
@@ -112,12 +125,10 @@ function dragDrop(e) {
       delete_data(data_clone);
     });
   } else if (close_func === null) {
-    console.log("if2");
     close_data.addEventListener("click", () => {
       delete_data(data_clone);
     });
   } else {
-    console.log("if3");
     close_data.addEventListener("click", () => {
       delete_data(data_clone);
     });
@@ -125,44 +136,33 @@ function dragDrop(e) {
       delete_func(func_clone);
     });
   }
-
-  console.log("count: ", count);
 }
 
 function delete_data(data_clone) {
-  document.querySelector(".db").appendChild(data_clone);
-  document
-    .querySelector(".db")
-    .childNodes[1].addEventListener("dragstart", dragStart);
-  document
-    .querySelector(".db")
-    .childNodes[1].addEventListener("dragend", dragEnd);
+  data_parent.appendChild(data_clone);
+  data_parent.childNodes[1].addEventListener("dragstart", dragStart);
+  data_parent.childNodes[1].addEventListener("dragend", dragEnd);
   document.querySelector(".data").style.background = "#d8dce2";
   document.querySelector(".data").style.border = "none";
   document.querySelector(".data").innerHTML = "데이터 슬롯";
-  resetResult();
-  console.log("child", document.querySelector(".db").childNodes[1]);
+
+  resetResult(); // 결과 슬롯도 초기화 되어야 함.
   count--;
-  console.log(count);
+  data_count--;
   checkButton();
 }
 
 function delete_func(func_clone) {
-  console.log("why");
-  document.querySelector(".fb").appendChild(func_clone);
-  document
-    .querySelector(".fb")
-    .childNodes[1].addEventListener("dragstart", dragStart);
-  document
-    .querySelector(".fb")
-    .childNodes[1].addEventListener("dragend", dragEnd);
+  func_parent.appendChild(func_clone);
+  func_parent.childNodes[1].addEventListener("dragstart", dragStart);
+  func_parent.childNodes[1].addEventListener("dragend", dragEnd);
   document.querySelector(".func").style.background = "#d8dce2";
   document.querySelector(".func").style.border = "none";
   document.querySelector(".func").innerHTML = "함수 슬롯";
   resetResult();
 
   count--;
-  console.log(count);
+  func_count--;
   checkButton();
 }
 
@@ -188,7 +188,6 @@ function resetResult() {
 // 결과 슬롯
 
 function onClick() {
-  console.log("clicked");
   result_slot.style.border = "solid 1px";
   result_slot.style.background = "white";
   let result_val = ""; // 일단 빈 문자열로 세팅
@@ -196,8 +195,8 @@ function onClick() {
   if (func === "block function-block toUpperCase") {
     result_val = data.toUpperCase();
   } else if (func === "block function-block wordNum") {
+    data = data.trim();
     result_val = data.split(" ").length;
-    console.log(data.split());
   } else if (func === "block function-block reverse") {
     result_val = data.split("").reverse().join("");
   }
