@@ -37,6 +37,7 @@ all_slots.forEach((slot) => {
 
 function dragOver(e) {
   e.preventDefault();
+  // 각 블록들이 갈 수 있는 슬롯 영역 제한 하기.
   if (draggableBlock.getAttribute("id") !== this.id) {
     this.style.border = "solid 3px red"; // 못가면 빨강
     // 드롭도 안되어야 함.
@@ -46,13 +47,11 @@ function dragOver(e) {
 }
 
 function dragEnter(e) {
-  // 각 블록들이 갈 수 있는 슬롯 영역 제한 하기.
-
   if (draggableBlock.getAttribute("id") !== this.id) {
-    this.style.border = "solid 3px red"; // 못가면 빨강
+    this.style.border = "solid 3px red";
     // 드롭도 안되어야 함.
   } else {
-    this.style.border = "3px dashed gray"; // 갈 수 있는 경우
+    this.style.border = "3px dashed gray";
   }
 }
 
@@ -61,6 +60,9 @@ function dragLeave() {
 }
 
 function dragDrop(e) {
+  let clone = e.target.cloneNode(true);
+  // let nodelist = document.getElementById("block").childNodes;
+
   this.style.border = "solid 1px";
   this.style.background = "white";
   this.style.display = "table";
@@ -72,7 +74,6 @@ function dragDrop(e) {
 
   let targetText = e.dataTransfer.getData("targetText"); // drop한 블록의 내용 가져오기
 
-  console.log(this);
   this.innerHTML = targetText; // 가져온 내용으로 슬롯 문구 변경하기
   count++; // 채워진 슬롯 체크
   checkButton();
@@ -110,6 +111,8 @@ function dragDrop(e) {
     checkButton();
   });
 
+  console.log("count: ", count);
+
   // const close_btns = document.querySelectorAll(".close");
 
   // close_btns.forEach((btn) => {
@@ -134,10 +137,10 @@ function checkButton() {
   if (count === 2) {
     // 데이터, 함수 슬롯이 모두 차면
     exec.disabled = false; //실행하기 버튼 활성화
-    exec.style.background = "#309bed";
+    exec.id = "exec-possible";
   } else if (count < 2) {
     exec.disabled = true; //실행하기 버튼 비활성화
-    exec.style.background = "#c0c9cd";
+    exec.id = "exec";
   }
 }
 
