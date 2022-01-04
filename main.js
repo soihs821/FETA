@@ -95,7 +95,6 @@ function dragDrop(e) {
 
   this.style.border = "solid 1px";
   this.style.background = "white";
-  this.style.width = "160px";
 
   if (count >= 2) {
     count = 2;
@@ -117,25 +116,32 @@ function dragDrop(e) {
   const close_data = document.querySelector("#data-x");
   const close_func = document.querySelector("#func-x");
 
-  if (close_data === null) {
+  if (close_data === null && close_func !== null) {
     close_func.addEventListener("click", () => {
       delete_func(func_clone);
+      count--;
+      checkButton();
     });
+  } else if (close_data !== null && close_func === null) {
     close_data.addEventListener("click", () => {
       delete_data(data_clone);
+      count--;
+      checkButton();
     });
-  } else if (close_func === null) {
+  } else if (close_data !== null && close_func !== null) {
     close_data.addEventListener("click", () => {
       delete_data(data_clone);
-    });
-  } else {
-    close_data.addEventListener("click", () => {
-      delete_data(data_clone);
+      count = 1;
+      checkButton();
     });
     close_func.addEventListener("click", () => {
       delete_func(func_clone);
+      count = 1;
+      checkButton();
     });
   }
+
+  console.log("count: ", count);
 }
 
 function delete_data(data_clone) {
@@ -147,9 +153,7 @@ function delete_data(data_clone) {
   document.querySelector(".data").innerHTML = "데이터 슬롯";
 
   resetResult(); // 결과 슬롯도 초기화 되어야 함.
-  count--;
   data_count--;
-  checkButton();
 }
 
 function delete_func(func_clone) {
@@ -161,9 +165,7 @@ function delete_func(func_clone) {
   document.querySelector(".func").innerHTML = "함수 슬롯";
   resetResult();
 
-  count--;
   func_count--;
-  checkButton();
 }
 
 function checkButton() {
@@ -180,8 +182,6 @@ function checkButton() {
 function resetResult() {
   result_slot.style.border = "none";
   result_slot.style.background = "#d8dce2";
-  result_slot.style.display = "table";
-  result_slot.style.verticalAlign = "center";
   result_slot.innerHTML = "결과 슬롯";
 }
 
