@@ -18,8 +18,6 @@ let func_clone = "";
 
 const exec = document.getElementById("exec");
 let count = 0; // 슬롯 채워진 여부 판단용
-let data_count = 0;
-let func_count = 0;
 
 blocks.forEach((block) => {
   block.addEventListener("dragstart", dragStart);
@@ -49,7 +47,6 @@ function dragOver(e) {
   // 각 블록들이 갈 수 있는 슬롯 영역 제한 하기.
   if (draggableBlock.getAttribute("id") !== this.id) {
     this.style.border = "solid 3px red"; // 못가면 빨강
-    // 드롭도 안되어야 함.
   } else {
     this.style.border = "3px dashed gray"; // 갈 수 있는 경우
   }
@@ -58,7 +55,6 @@ function dragOver(e) {
 function dragEnter(e) {
   if (draggableBlock.getAttribute("id") !== this.id) {
     this.style.border = "solid 3px red";
-    // 드롭도 안되어야 함.
   } else {
     this.style.border = "3px dashed gray";
   }
@@ -69,23 +65,12 @@ function dragLeave() {
 }
 
 function dragDrop(e) {
-  // 슬롯에 덧씌울 때 블록 삭제 안되게 하기 위함
-  /*if (data_count >= 1) {
-    console.log("2");
-    data_parent.appendChild(data_clone);
-    console.log(this);
-  } else if (func_count >= 1) {
-    console.log("func_clone", func_clone);
-    func_parent.appendChild(func_clone);
-    console.log("func_count", func_count);
-  }*/
-
   if (draggableBlock.id === "data") {
     data_clone = draggableBlock.cloneNode(true);
-    data_count++;
+    //data_count++;
   } else if (draggableBlock.id === "func") {
     func_clone = draggableBlock.cloneNode(true);
-    func_count++;
+    //func_count++;
   }
 
   this.appendChild(draggableBlock);
@@ -140,8 +125,6 @@ function dragDrop(e) {
       checkButton();
     });
   }
-
-  console.log("count: ", count);
 }
 
 function delete_data(data_clone) {
@@ -153,7 +136,6 @@ function delete_data(data_clone) {
   document.querySelector(".data").innerHTML = "데이터 슬롯";
 
   resetResult(); // 결과 슬롯도 초기화 되어야 함.
-  data_count--;
 }
 
 function delete_func(func_clone) {
@@ -163,9 +145,8 @@ function delete_func(func_clone) {
   document.querySelector(".func").style.background = "#d8dce2";
   document.querySelector(".func").style.border = "none";
   document.querySelector(".func").innerHTML = "함수 슬롯";
-  resetResult();
 
-  func_count--;
+  resetResult();
 }
 
 function checkButton() {
@@ -185,8 +166,7 @@ function resetResult() {
   result_slot.innerHTML = "결과 슬롯";
 }
 
-// 결과 슬롯
-
+// 결과 슬롯 계산
 function onClick() {
   result_slot.style.border = "solid 1px";
   result_slot.style.background = "white";
